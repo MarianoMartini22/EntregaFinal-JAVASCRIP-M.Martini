@@ -1,0 +1,28 @@
+footer {
+    display: flex;
+    flex-direction: column;
+
+    div {
+        @include ancho (100%);
+
+        p {
+            text-align: center;
+            justify-content: center;
+        }
+    }
+}
+
+.seguinosEn {
+    text-transform: uppercase;
+    padding: 80px;
+    text-align: center;
+}
+
+.footer {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr;
+    grid-template-areas: 100%;
+    padding-top: 100px;
+    justify-content: flex-end;
+}

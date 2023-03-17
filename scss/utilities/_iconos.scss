@@ -1,0 +1,13 @@
+.redes_sociales {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    @include ancho (100%);
+    justify-content: flex-end;
+    padding: 5%;
+}
+
+i {
+    font-size: 50px;
+}
+

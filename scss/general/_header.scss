@@ -1,0 +1,16 @@
+header {
+    background-color: $secondary;
+    display: flex;
+
+    div {
+        @include ancho (50%);
+
+        a {
+
+            img {
+                padding: 3px;
+                @include ancho (30%);
+            }
+        }
+    }
+}
