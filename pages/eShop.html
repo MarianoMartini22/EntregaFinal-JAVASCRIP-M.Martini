@@ -23,13 +23,10 @@
         integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <!--css-->
     <link rel="stylesheet" href="../scss/principal.css">
-</head>
-
-<body class="fondoBody">
     <header>
         <!--Logo-->
         <div class="wow animate__animated animate__bounceInRight"> <a href="../index.html"><img
-                    src="../assets/img/logo/Logo-Credit-Bike.webp" alt="logo"></a>
+                    src="../assets/img/Logo/Logo-Credit-Bike.webp" alt="logo"></a>
         </div>
         <nav class="navbar navbar-expand-lg bg-light">
             <div class="container-fluid">
@@ -56,9 +53,21 @@
             </div>
         </nav>
     </header>
+</head>
+
+<body class="fondoBody">
     <h1>Bike Shop</h1>
+
     <div id="carrito_container" style="display: flex; justify-content: center;"></div>
     <div class="container" id="shop_container">
+        <h3 style="display: flex; justify-content: center;">Ingrese su ciudad para saber si el día esta ideal para pasear en bicicleta</h3>
+        <form id="formCiudad" method="post" style="display: flex; justify-content: center;">
+            <div class="d-inline-flex p-2 m-3" >
+                <label class="form-label" style="padding-top: 10px; padding-right: 10px;">Ciudad: </label>
+                <input type="text" class="form-control" name="ciudad" style="margin-right: 1rem;" placeholder="Ej: buenos aires"/>
+                <button type="submit" class="btn btn-success">Buscar...</button>
+            </div>
+        </form>
         <div class="row">
             <div class="col-lg-4 d-flex align-items-stretch">
                 <div class="card">

@@ -1,3 +1,15 @@
+// FECHA
+
+const intervalo = setInterval(() => {
+    if (!window.location.href.includes('index.html')) clearInterval(intervalo);
+    if (typeof luxon !== 'undefined' && document.getElementById('fechaLuxon')) {
+        const DateTime = luxon.DateTime;
+        let dt = DateTime.local();
+        dt = dt.c;
+        const fechaActual = dt.day + '-' + dt.month + '-' + dt.year + ' ' + dt.hour + ':' + ((dt.minute < 10) ? '0' + dt.minute : dt.minute) + ':' + ((dt.second < 10) ? '0' + dt.second : dt.second);
+        document.getElementById('fechaLuxon').innerText = fechaActual;
+    }
+}, 1000);
 for (let i = 0; i < document.querySelectorAll('.carrito').length; i++) {
     const element = document.querySelectorAll('.carrito')[i];
     element.addEventListener("click", onClickComprar);
@@ -75,6 +87,7 @@ for (let i = 0; i < document.querySelectorAll('.carrito').length; i++) {
         document.getElementById('financiamiento').style.display = 'none';
         document.getElementById('spanFinanciamiento').style.display = 'none';
         const form  = document.getElementById('formCarrito' + i);
+        
         const compra = {};
         form.addEventListener('submit', (event) => {
             event.preventDefault();
@@ -226,4 +239,97 @@ function dividir(dato1, dato2) {
     // Sumo el interes al precio
     let resultado = obtenerValorFinanciado(dato1, dato2) / dato2;
     return resultado
+}
+
+const formCiudad  = document.getElementById('formCiudad');
+if (formCiudad) {
+    formCiudad.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        let textBuscar = formCiudad.elements[0].value;
+        const { ok, data: clima, error } = await getTempCiudad(textBuscar);
+        const badWeathers = [
+            'Thunderstorm',
+            'Drizzle',
+            'Rain',
+            'Snow',
+            'Atmosphere',
+        ];
+        const goodWeathers = [
+            'Clear',
+            'Clouds',
+        ];
+        let mensaje = '';
+        let icon = null;
+    
+        if (!ok) {
+            Swal.fire({
+                title: 'Error',
+                html: `
+                    ${error}
+                `,
+                icon: 'error',
+                confirmButtonText: 'Salir',
+            });
+            return;
+        }
+        icon = await getIcon(clima.icon);
+        if (goodWeathers.includes(clima.main)) {
+            mensaje = 'Clima actualmente: ' + clima.description + `<img src="${icon.url}" style="width:32px;height:32px"></img>, por ende es un buen día para andar en bicicleta!`;
+        } else if (badWeathers.includes(clima.main)) {
+            mensaje = 'Clima actualmente: ' + clima.description + `<img src="${icon.url}" style="width:32px;height:32px"></img>, es mejor quedarse en casa`;
+        }
+        textBuscar = textBuscar[0].toUpperCase() + textBuscar.substring(1);
+        Swal.fire({
+            title: `Clima en ${textBuscar}`,
+            html: `
+                <p>${mensaje}</p>
+            `,
+            icon: 'info',
+            confirmButtonText: 'Salir',
+        }).then(() => {
+            formCiudad.elements[0].value = '';
+        });
+    });
+}
+
+
+// API KEY 42e17c84d7b57a71fbe8cff3d3e9b982
+const getTempCiudad = async(ciudad = 'buenos aires') => {
+    const URL_FETCH = 'https://api.openweathermap.org/data/2.5/weather?appid=42e17c84d7b57a71fbe8cff3d3e9b982&lang=sp&q=';
+    let respuesta = {};
+    respuesta = fetch(URL_FETCH + ciudad)
+    .then((response) => response.json())
+    .then(({ weather }) => {
+        if (typeof weather === 'undefined') {
+            return {
+                ok: false,
+                error: 'No hay una ciudad con ese nombre'
+            }
+        }
+        return {
+            ok: true,
+            data: weather[0],
+        }
+    })
+    .catch((error) => {
+        return {
+            ok: false,
+            error
+        }
+    });
+    return respuesta;
+};
+
+const getIcon = (icon) => {
+    const URL_FETCH = `https://openweathermap.org/img/wn/${icon}@2x.png`;
+    let respuesta = null;
+    respuesta = fetch(URL_FETCH)
+    .then(response => response)
+    .catch(error => {
+        return {
+            ok: false,
+            error
+        }
+    });
+    return respuesta;
 }
